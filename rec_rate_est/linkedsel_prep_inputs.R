@@ -249,11 +249,11 @@ for (map in all_maps_final) {
 }
 
 #read in gene density estimates 
-gd.100<-read.table("./data/gd.100.txt", stringsAsFactors=F)
+gd.100<-read.table("../prepare_input_files/gd.100.txt", stringsAsFactors=F)
 gd.100$window = 100
-gd.500<-read.table("./data/gd.500.txt", stringsAsFactors=F)
+gd.500<-read.table("../prepare_input_files/gd.500.txt", stringsAsFactors=F)
 gd.500$window = 500
-gd.1000<-read.table("./data/gd.1000.txt", stringsAsFactors=F)
+gd.1000<-read.table("../prepare_input_files/gd.1000.txt", stringsAsFactors=F)
 gd.1000$window = 1000
 gd<-rbind(gd.100, gd.500, gd.1000)
 #convert species names to be consistent with maps
@@ -297,7 +297,7 @@ windows$piece.cm.l<-round(unlist(dlply(windows, .(species, chr), function(x) est
 #input to Gk should be sorted by species and chromosome (and position?) as Gk script does not santitize inputs
 #Gk script also requires separate files for a given window size
 
-all.exons<-read.table("./data//total.exons.txt")
+all.exons<-read.table("../prepare_input_files//total.exons.txt")
 names(all.exons)=c("species", "total.exons")
 all.exons$species = tolower(all.exons$species)
 all.exons$species = substring(all.exons$sp, 1, 4)
@@ -332,10 +332,6 @@ windows.filt$use = F
 windows.clean = merge(windows, windows.filt, all.x=T)
 windows.clean$use[is.na(windows.clean$use)] = T
 
-#correlations between different rate calculations
-rec.rate.cors<-by(windows.clean, list(species=windows.clean$species), function(x) cor(x$poly.rr, x$piece.rr, method="ke", use="complete.obs"))
-rec.rate.cors.clean<-by(windows.clean[windows.clean$use==T,], list(species=windows.clean$species[windows.clean$use==T]), function(x) cor(x$poly.rr, x$piece.rr, method="ke", use="complete.obs"))
-
 #windows clean now has recombination rate for each window
 
 #make mutation rate files
@@ -343,7 +339,7 @@ rec.rate.cors.clean<-by(windows.clean[windows.clean$use==T,], list(species=windo
 
 mut.ests<-data.frame(class=c("plant", "vert", "ins", "nem"), est=c(0.000000007,0.0000000118,0.0000000028,0.0000000027))
 u.df<-data.frame(species=names(all_maps_final), class=c("ins", "ins", "plant", "plant", "ins", "vert", "nem", "plant", "nem", "plant", "vert", "plant", "plant", "vert", "ins", "ins", "vert", "vert", "vert", "vert", "vert", "plant", "plant", "ins", "vert", "vert", "vert", "vert", "vert", "plant", "vert", "vert", "plant", "vert", "plant", "plant", "plant", "plant", "vert", "plant"))
-genome.size<-read.table("./data/genome_size.txt", header=T)
+genome.size<-read.table("../prepare_input_files/genome_size.txt", header=T)
 u.df<-merge(u.df, mut.ests)
 u.df<-merge(u.df, all.exons)
 u.df<-merge(u.df, genome.size)
@@ -354,22 +350,22 @@ u.df$u.max=u.df$frac.conserved*u.df$size.mb*1e6*u.df$est*2
 
 #add theta for each window in windows for theta
 #read in theta estimates and clean up
-theta.std.100<-read.table("./data/std.100.txt", stringsAsFactors=F)
+theta.std.100<-read.table("../prepare_input_files/std.100.txt", stringsAsFactors=F)
 theta.std.100$window = 100
 theta.std.100$filt = "std"
-theta.std.500<-read.table("./data/std.500.txt", stringsAsFactors=F)
+theta.std.500<-read.table("../prepare_input_files/std.500.txt", stringsAsFactors=F)
 theta.std.500$window = 500
 theta.std.500$filt = "std"
-theta.std.1000<-read.table("./data/std.1000.txt", stringsAsFactors=F)
+theta.std.1000<-read.table("../prepare_input_files/std.1000.txt", stringsAsFactors=F)
 theta.std.1000$window = 1000
 theta.std.1000$filt = "std"
-theta.q30.100<-read.table("./data/q30.100.txt", stringsAsFactors=F)
+theta.q30.100<-read.table("../prepare_input_files/q30.100.txt", stringsAsFactors=F)
 theta.q30.100$window = 100
 theta.q30.100$filt = "q30"
-theta.q30.500<-read.table("./data/q30.500.txt", stringsAsFactors=F)
+theta.q30.500<-read.table("../prepare_input_files/q30.500.txt", stringsAsFactors=F)
 theta.q30.500$window = 500
 theta.q30.500$filt = "q30"
-theta.q30.1000<-read.table("./data/q30.1000.txt", stringsAsFactors=F)
+theta.q30.1000<-read.table("../prepare_input_files/q30.1000.txt", stringsAsFactors=F)
 theta.q30.1000$window = 1000
 theta.q30.1000$filt = "q30"
 theta<-rbind(theta.std.100, theta.std.500, theta.std.1000, theta.q30.100, theta.q30.500, theta.q30.1000)
@@ -409,16 +405,17 @@ windows.for.theta=rbind(windows.piece, windows.poly)
 #windows for gk <- one file each per window size and rec estimator
 #mutation rates <- mutation rate options to use for each species
 
-write.table(windows.for.theta, file="./data/windows_for_theta.out", row.names=F, quote=F, sep="\t")
+write.table(windows.for.theta, file="windows_for_theta.out", row.names=F, quote=F, sep="\t")
 
-write.table(wind100.poly.for.gk, file="./data/wind100_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind500.poly.for.gk, file="./data/wind500_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind1000.poly.for.gk, file="./data/wind1000_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind100.piece.for.gk, file="./data/wind100_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind500.piece.for.gk, file="./data/wind500_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind1000.piece.for.gk, file="./data/wind1000_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind100.poly.for.gk, file="wind100_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind500.poly.for.gk, file="wind500_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind1000.poly.for.gk, file="wind1000_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind100.piece.for.gk, file="wind100_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind500.piece.for.gk, file="wind500_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(wind1000.piece.for.gk, file="wind1000_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
 
-write.table(u.df, file="./data/mut_ests.txt", row.names=F, quote=F, sep="\t")
+write.table(u.df, file="mut_ests.txt", row.names=F, quote=F, sep="\t")
+write.table(merged.r2, file="rec_fits.txt", row.names=F, col.names=T, quote=F, sep="\t")
 
 ############CODE ENDS####################
 
