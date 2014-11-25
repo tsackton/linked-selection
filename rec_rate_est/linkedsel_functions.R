@@ -6,8 +6,8 @@ cleanup_maps <- function(x) {
   stopifnot(is.data.frame(x) && isTRUE(all.equal(colnames(x), c("chr", "marker", "cm", "mb", "sp"))));
   x$chr<-as.character(x$chr)
   x$marker<-as.character(x$marker)
-  x$mb<-round(x$mb, 5)
-  x$cm<-round(x$cm, 5)
+  x$mb<-round(x$mb, 8)
+  x$cm<-round(x$cm, 8)
   if (any(grepl("chr", x$chr, fixed=T))) {
     x<-unique(x)
     return(x)
@@ -93,10 +93,11 @@ remove_duplicate_markers<-function(map) {
       else {
         low.cm = spec.sub[1,"cm"]
         chr.id = unique(spec.sub$chr)
+        stopifnot(length(chr.id)==1)
         high.cm.row = min(c(as.numeric(row2)+1),max(rownames(map[map$chr==chr.id,])))
         while(map[high.cm.row,"good.marker"]==F) {
           high.cm.row = as.character(as.numeric(high.cm.row)+1)
-          high.cm.row = min(c(high.cm.row),max(rownames(map[map$chr==chr.id & map$good.marker==T,])))
+          high.cm.row = min(c(high.cm.row),max(as.numeric(rownames(map[map$chr==chr.id & map$good.marker==T,]))))
         }
         high.cm = map[high.cm.row, "cm"]
         spec.sub=spec.sub[-1,]
