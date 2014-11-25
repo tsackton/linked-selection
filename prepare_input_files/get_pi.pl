@@ -133,7 +133,7 @@ sub clean_chr {
 	}
 	
 	if (exists($roman_convert{$chr}) and ($sp eq "Gaculeatus" or $sp eq "Celegans" or $sp eq "Cbriggsae")) {
-		$chr = $roman_convert{$chr};=
+		$chr = $roman_convert{$chr};
 	}
 	
 	if ($chr eq "19" and $sp eq "Gaculeatus") {
