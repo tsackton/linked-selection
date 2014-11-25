@@ -4,6 +4,17 @@ use warnings ;
 use strict ; 
 use Parallel::ForkManager;
 
+#move files
+system("cp ../rec_rate_est/*forgk.out.gz .");
+system("cp ../rec_rate_est/mut_ests.txt . ");
+
+#unzip
+system("gunzip *.gz");
+
+#make output dir
+my $outdir = $ARGV[0];
+system("mkdir -p $outdir");
+
 my %mut; 
 my @species;
 open IN, "<mut_ests.txt" ;
@@ -19,7 +30,6 @@ while (<IN>) {
 }
 close IN ; 
 
-my $outdir = $ARGV[0];
 my @files = <*forgk.out>; 
 
 my $manager = new Parallel::ForkManager( 60 );
@@ -38,3 +48,6 @@ foreach my $file ( @files ) {
 	}
 }
 $manager->wait_all_children;
+
+#clean up files
+system("rm *forgk.out");

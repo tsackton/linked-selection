@@ -9,7 +9,7 @@ use Parallel::ForkManager;
 my $indir = shift;
 my @files = <$indir/*.gk>;
 
-my $manager = new Parallel::ForkManager( 16 );
+my $manager = new Parallel::ForkManager( 8 );
 foreach my $file (@files) {
 	$manager->start and next;
 	$file =~ s/^.*?([A-Za-z._0-9]+)$/$1/;
