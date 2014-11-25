@@ -6,8 +6,8 @@ cleanup_maps <- function(x) {
   stopifnot(is.data.frame(x) && isTRUE(all.equal(colnames(x), c("chr", "marker", "cm", "mb", "sp"))));
   x$chr<-as.character(x$chr)
   x$marker<-as.character(x$marker)
-  x$mb<-round(x$mb, 3)
-  x$cm<-round(x$mb, 3)
+  x$mb<-round(x$mb, 5)
+  x$cm<-round(x$cm, 5)
   if (any(grepl("chr", x$chr, fixed=T))) {
     x<-unique(x)
     return(x)

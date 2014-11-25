@@ -2,8 +2,8 @@
 source("linkedsel_functions.R")
 
 #load inputs
-all_maps<-load(file="../prepare_input_files/all_maps.RData")
-map.info.raw<-read.table("../prepare_input_files/map_info_raw.txt", header=T, sep=T)
+load(file="../prepare_input_files/all_maps_list.RData")
+map.info.raw<-read.table("../prepare_input_files/map_info_raw.txt", header=T, sep="\t")
 
 #########THIS CODE CLEANS MAPS AND ESTIMATES RECOMBINATION RATE###############
 
@@ -47,7 +47,7 @@ for (map in all_maps_mm_removed) {
 all_maps_final<-lapply(all_maps_mm_removed, remove_duplicate_markers)
 
 #get info after removing duplicates
-map.info.rmbad<-as.data.frame(sapply(all_maps_dup_removed, function(x) sum(x$good.marker)))
+map.info.rmbad<-as.data.frame(sapply(all_maps_final, function(x) sum(x$good.marker)))
 names(map.info.rmbad)=c("good.markers")
 map.info.final<-merge(map.info.mapped, map.info.rmbad, by.y="row.names", by.x="sp")
 map.info.final$density.good = map.info.final$map.length/map.info.final$good.markers
@@ -297,7 +297,7 @@ windows$piece.cm.l<-round(unlist(dlply(windows, .(species, chr), function(x) est
 #input to Gk should be sorted by species and chromosome (and position?) as Gk script does not santitize inputs
 #Gk script also requires separate files for a given window size
 
-all.exons<-read.table("../prepare_input_files//total.exons.txt")
+all.exons<-read.table("../prepare_input_files/total.exons.txt")
 names(all.exons)=c("species", "total.exons")
 all.exons$species = tolower(all.exons$species)
 all.exons$species = substring(all.exons$sp, 1, 4)
@@ -379,8 +379,6 @@ theta$species[theta$species=="mmca"] = "mmus"
 theta$species[theta$species=="ocan"] = "oari"
 theta$species[theta$species=="oruf"] = "osat"
 theta$species[theta$species=="pdav"] = "pper"
-#clean up temp objects
-rm(list=ls(pattern="\\w\\w\\w.\\d+"))
 
 #fix chr names
 theta$chr = sub("^0", "", theta$chr, perl=T)
