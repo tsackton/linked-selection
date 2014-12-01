@@ -20,7 +20,8 @@ foreach my $file (@files) {
 	print $params "file = \"$indir\/$file\"\nspec = \"$sp\"\nwindsize = \"$window\"\nrecmethod = \"$rec\"\nuversion = \"$umut\"\n\n";
 	print "R --quiet --no-save < $file.run\n";
 	system("cat $file.params run_bgs.R > $file.run");
-	system("R --quiet --no-save < $file.run");	
+	system("R --quiet --no-save < $file.run > ./Rlogs/$file.Rout");	
+	system("mv $file.params $file.run ./Rlogs");
 	$manager->finish;
 }
 $manager->wait_all_children
