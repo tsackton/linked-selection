@@ -615,7 +615,7 @@ range<-rbind(range, data.frame(species="bmor", area=gArea(bman.proj)/1e6))
 range<-rbind(range, data.frame(species="cbri", area=gArea(cbri.proj)/1e6))
 range<-rbind(range, data.frame(species="cele", area=gArea(cele.proj)/1e6))
 range<-rbind(range, data.frame(species="clan", area=gArea(clan.proj)/1e6))
-range<-rbind(range, data.frame(species="cfam", area=gArea(clup.proj)/1e6))
+range<-rbind(range, data.frame(species="clup", area=gArea(clup.proj)/1e6))
 range<-rbind(range, data.frame(species="crub", area=gArea(crub.proj)/1e6))
 range<-rbind(range, data.frame(species="csat", area=gArea(csat.proj)/1e6))
 range<-rbind(range, data.frame(species="dmel", area=gArea(dmel.proj)/1e6))
@@ -629,7 +629,7 @@ range<-rbind(range, data.frame(species="locu", area=gArea(locu.proj)/1e6))
 range<-rbind(range, data.frame(species="mmus", area=gArea(mcas.proj)/1e6))
 range<-rbind(range, data.frame(species="mmul", area=gArea(mmul.proj)/1e6))
 range<-rbind(range, data.frame(species="mtru", area=gArea(mtru.proj)/1e6))
-range<-rbind(range, data.frame(species="oair", area=gArea(ocan.proj)/1e6))
+range<-rbind(range, data.frame(species="oari", area=gArea(ocan.proj)/1e6))
 range<-rbind(range, data.frame(species="olat", area=gArea(olat.proj)/1e6))
 range<-rbind(range, data.frame(species="osat", area=gArea(oruf.proj)/1e6))
 range<-rbind(range, data.frame(species="panu", area=gArea(panu.proj)/1e6))
@@ -650,7 +650,7 @@ range<-rbind(range, data.frame(species="btau", area=3.778e11/1e6))
 
 #Citrus reticulata - domesticated species, use information on native range from http://www.ars-grin.gov/cgi-bin/npgs/html/taxon.pl?10778
 #we assume range is equal to area of Vietnam, from Google
-range<-rbind(range, data.frame(species="cret", area=331210000000/1e6))
+range<-rbind(range, data.frame(species="ccle", area=331210000000/1e6))
 
 #Gallus gallus - domesticated, need to think about this
 #data is from two Chinese heritage breeds, the Silkie and the Tawianese L2

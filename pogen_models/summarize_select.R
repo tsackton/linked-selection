@@ -44,8 +44,11 @@ ne.cors<-merge(ne.cors, range)
 ne<-merge(ne.cors, select.final.pi, by.x="spec", by.y="spec")
 
 #nuisance parameters
+map.params<-read.table("../rec_rate_est/map_info_final.txt", header=T, sep="\t")
+qc.params<-read.table("../spec_props/qc_params.txt", header=T, sep="\t")
 
-##NEED TO DO##
+ne<-merge(ne, map.params, by.x="spec", by.y="sp")
+ne<-merge(ne, qc.params, by.x="spec", by.y="sp")
 
 #load in average pi calculations
 std.pi<-read.table("../prepare_input_files/std.average_pi.txt", header=F)
@@ -74,20 +77,9 @@ ne$selstr.best=pmax(0, 1-(ne$pi.avg/ne$pi.best))
 #again, weighted vs best makes very little difference; use best again for consistency
 ne=subset(ne, select=-c(pi.wt, selstr.wt))
 
+#use poly fit if cM density good is >5, otherwise use piece
+ne=subset(ne, (density.good > 2 & rec == "poly") | (density.good <= 2 & rec=="piece"))
+
 #ne is our final dataset, write out
-
-
-
-#now we can getadjR2 from models for each variable set
-adj.r2.interact.best<-ddply(ne, .(rec, wind, filt, U, mod.set), summarize, adjr2=summary(lm(selstr.best ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$adj.r.squared, fstat=summary(lm(selstr.best ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[1], numdf=summary(lm(selstr.best ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[2], dendf=summary(lm(selstr.best ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[3])
-adj.r2.interact.best$pvalue=apply(adj.r2.interact.best[,c(7,8,9)], 1, function(x) pf(x[1], x[2], x[3], lower.tail=F))
-
-adj.r2.interact.full<-ddply(ne, .(rec, wind, filt, U, mod.set), summarize, adjr2=summary(lm(selstr.full ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$adj.r.squared, fstat=summary(lm(selstr.full ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[1], numdf=summary(lm(selstr.full ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[2], dendf=summary(lm(selstr.full ~ log10(size.m) + log10(area) + log10(size.m):kingdom + log10(area):kingdom))$fstatistic[3])
-adj.r2.interact.full$pvalue=apply(adj.r2.interact.full[,c(7,8,9)], 1, function(x) pf(x[1], x[2], x[3], lower.tail=F))
-
-
-adj.r2.sep.best<-ddply(ne, .(rec, wind, filt, U, mod.set, kingdom), summarize, adjr2=summary(lm(selstr.best ~ log10(size.m) + log10(area)))$adj.r.squared, fstat=summary(lm(selstr.best ~ log10(size.m) + log10(area)))$fstatistic[1], numdf=summary(lm(selstr.best ~ log10(size.m) + log10(area)))$fstatistic[2], dendf=summary(lm(selstr.best ~ log10(size.m) + log10(area)))$fstatistic[3])
-adj.r2.sep.best$pvalue=apply(adj.r2.sep.best[,c(8,9,10)], 1, function(x) pf(x[1], x[2], x[3], lower.tail=F))
-
-
+write.table(ne, "ne_final_table.out", row.names=F, quote=F, sep="\t")
 
