@@ -49,9 +49,15 @@ all_maps_final<-lapply(all_maps_mm_removed, remove_duplicate_markers)
 #get info after removing duplicates
 map.info.rmbad<-as.data.frame(sapply(all_maps_final, function(x) sum(x$good.marker)))
 names(map.info.rmbad)=c("good.markers")
+map.info.mb<-as.data.frame(sapply(all_maps_final, function(z) sum(aggregate(z$mb, list(chr=z$chr), function(x) max(x)-min(x))$x)))
+names(map.info.mb)=c("mb.tot")
 map.info.final<-merge(map.info.mapped, map.info.rmbad, by.y="row.names", by.x="sp")
+map.info.final<-merge(map.info.final, map.info.mb, by.y="row.names", by.x="sp")
 map.info.final$density.good = map.info.final$map.length/map.info.final$good.markers
 map.info.final$prop.good = map.info.final$good.markers/map.info.final$markers
+map.info.final$rec.rate = map.info.final$map.length/map.info.final$mb.tot
+write.table(file="map_info_final.txt", map.info.final, row.names=F, sep="\t", quote=F)
+
 
 #plot final marey maps
 for (map in all_maps_final) {
