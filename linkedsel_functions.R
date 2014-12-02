@@ -376,5 +376,34 @@ est_cm_piece<-function(species, chr, window.pos, window.size, ...) {
     return(cm.piece)
 }
 
+get_mod_results<-function(spec, wind, U, rec, selfing, ...) {
+  path="/Volumes/LaCie/Projects/Current/ne/final_data/modres/"
+  file=paste(spec,wind,U,rec,"select.out", sep="_")
+  print(file)
+  mod.run<-read.table(paste0(path,file),header=T)
+  #remove ill-conditioned fits (pi.neut = 1 is boundary of search space)
+  mod.run=droplevels(subset(mod.run, model != "bgs_only(const)" & pi.neut < 1 & !is.na(pi.neut))) 
+  if (is.na(selfing)) {
+    mod.run=mod.run 
+  } else if (selfing=="no") {
+    mod.run=mod.run[!is.na(mod.run$P) & mod.run$P==1,]
+  } else if (selfing=="partial") {
+    mod.run=mod.run[!is.na(mod.run$P) & mod.run$P>=0.60 & mod.run$P<=0.72,]
+  } else if (selfing=="yes"){
+    mod.run=mod.run[!is.na(mod.run$P) & mod.run$P<=0.08,]  
+  } 
+  aic.min=aggregate(mod.run$aic, list(model=mod.run$model, filt=mod.run$filt), min, na.rm=T)
+  names(aic.min)[3]="aic.min"
+  mod.run=merge(mod.run, aic.min)
+  mod.run=unique(mod.run[,c("model", "filt","aic", "ll", "pi.neut", "aic.min")])
+  mod.run$rel.lik=exp((mod.run$aic.min-mod.run$aic)/2)
+  results=ddply(.data=mod.run, .variables=.(model,filt), summarise, best.pi=pi.neut[aic==aic.min & !is.na(aic)], mean.pi=weighted.mean(pi.neut, rel.lik), best.aic=min(aic,na.rm=T), best.ll=ll[aic==aic.min & !is.na(aic)])
+  results$U = U
+  results$spec = spec
+  results$wind = wind
+  results$rec = rec
+  return(results)
+}
+
 
 

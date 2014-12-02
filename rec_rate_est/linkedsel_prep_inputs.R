@@ -1,5 +1,5 @@
 #set up functions
-source("linkedsel_functions.R")
+source("../linkedsel_functions.R")
 
 #load inputs
 load(file="../prepare_input_files/all_maps_list.RData")

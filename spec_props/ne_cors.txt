@@ -1,0 +1,41 @@
+sp	density.perkm2	gen.time.years	mass.g	size.m	trophic.cat	kingdom
+agam		0.0383561644	0.00108	0.00292	2	animal
+amel	6	0.0548	0.0987	0.015	1	animal
+atha		1		0.135	0	plant
+bmor		0.154	0.425	0.04	1	animal
+btau		1	618640	1.5	1	animal
+bdis		1		0.15	0	plant
+cbri		0.0082191781	0.000004	0.00115	3	animal
+cele		0.0082191781	0.000004	0.00115	3	animal
+clup	0.016	2.5	31000	1.06	3	animal
+crub		1		0.577	0	plant
+clan		1		3	0	plant
+ccle		5		5	0	plant
+csat		1		2	0	plant
+csem		1.25	405.55	0.571	3	animal
+drer		0.1726027397	0.175	0.025	2	animal
+dmel	14350	0.0274	0.0011	0.00154	1	animal
+dpse	3800	0.0438356164	0.0014	0.002	1	animal
+ecab		2.58	403600	1.36	1	animal
+falb		1	14	0.1275	3	animal
+ggal	99	0.4166666667	2580.2	0.7	2	animal
+gacu		2	1.8	0.05	3	animal
+gmax		1		0.9144	0	plant
+grai		1		1.5	0	plant
+hmel		0.0794520548	0.12	0.02	1	animal
+hsap		13.5	58540	1.65	2	animal
+locu		1	2440	0.46	3	animal
+mmul	5.15	4.5	6460	0.54	2	animal
+mtru	900000	1		0.175	0	plant
+mgal	4.5	0.8333333333	7300	1.125	2	animal
+mmus	10000	0.115	19.3	0.22	2	animal
+osat		1		2	0	plant
+olat		0.1342465753	0.1409	0.021	2	animal
+oari	2.6	2.5	74600	1.57	1	animal
+panu	11.7	8	17730	1.05	2	animal
+ptri		10		30.48	0	plant
+pper		3		6.09	0	plant
+sita		1		1.52	0	plant
+sbic		1		1.22	0	plant
+sscr	0.8	0.5	130000	1.35	2	animal
+zmay		1		2.44	0	plant
