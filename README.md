@@ -43,6 +43,7 @@ This section describes the script in the "rec_rate_est" folder used to:
 + Produce windowed files for population genetic models
 
 There is only a single script, linkedsel_rec_est.R, that does all the necessary steps. These steps are:
+
 1. Remove mismapped markers from genetic maps (cases where genetic and physical maps are not congruent)
 2. Remove duplicate markers from genetic maps (cases where a single marker has multiple hits to the genome assembly)
 3. Make a mask of regions to ignore with low quality recombination estimates
@@ -65,6 +66,7 @@ based on the method of Rockman et al and Flowers et al.
 + fit a variety of population genetic models to the data using nonlinear regression in R
 
 Population genetic modeling:
+
 0. Compile compute_gk.cpp. It should compile on both Mac OS X and most flavors of Linux. 
 	It has been tested on Mac OS X 10.6.8 with g++ version 4.2.1, and on CentOS 6.4 with g++ 4.4.7
 	To compile, simply run g++ -o compute_gk compute_gk.cpp
@@ -95,6 +97,7 @@ And the data in "spec_props" describing:
 + assembly QC parameters
 
 Estimate species range:
+
 1. the load_range_gbif.R script downloads geotagged occurrence data for each species from GBIF and saves it to a .RData file. This can take some time to run.
 2. the species_range.R script uses R to compute ranges based on an alpha-hull, and writes the results out as range.final.
 3. in some cases, occurrence data is not available from GBIF, so geotagged locations are either loaded from an included file or hard coded in the R script
@@ -103,6 +106,7 @@ Note that the range estimation scripts require a number of R packages: dismo, rg
 The species_range.R script also requires the 50m ocean shapefile from http//www.naturalearthdata.com/download/50m/physical/ne_50m_ocean.zip
 
 Data files:
+
 1. ne_cors.txt: body size, mass, trophic level, kingdom, generation time, and density. Sources are described in spcor_ne.xls and the manuscript.
 2. qc_params.txt: total assembly size, size of assembly placed on chromosomes, ungapped placed assembly size, total genome size from C-value estimates, and whether our polymorphism data comes from domesticated populations. Sources described in spcor_assembly.xls and the manuscript.
 
