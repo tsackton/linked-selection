@@ -1,4 +1,5 @@
 #LOAD DATA FROM GBIF
+require(dismo)
 
 #Anopheles gambiae (agam)
 agam.gbif<-gbif(genus="Anopheles", species="gambiae*", geo=T, removeZeros=T, concept=T)

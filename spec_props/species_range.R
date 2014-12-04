@@ -13,7 +13,7 @@ library(sp)
 data(wrld_simpl)
 
 cty.borders<-getData('countries')
-oceans<-readOGR("ne_50m_ocean", "ne_50m_ocean") #Natural Earth oceans shapefile
+oceans<-readOGR("ne_50m_ocean", "ne_50m_ocean") #Natural Earth oceans shapefile, this needs to be downloaded from http//www.naturalearthdata.com/download/50m/physical/ne_50m_ocean.zip and unzipped into this directory
 
 #Polymorphism Species
 #Anopheles gambiae (agam)
@@ -725,7 +725,11 @@ plot(dpse.range.clean, add=T, lwd=2, axes=T, density=15, angle=45)
 dpse.proj<-spTransform(dpse.range.clean, CRS("+proj=cea +lon_0=0"))
 range<-rbind(range, data.frame(species="dpse", area=gArea(dpse.proj)/1e6))
 
-#load IUCN polygons
+#write final range data
+write.table(file="range.final", range, sep="\t", col.names=T, row.names=F, quote=F)
+
+#load IUCN polygons; these can be downloaded from IUCN if desired, otherwise ignore this section
+#IUCN shapefiles are not used in the manuscript
 iucn.area<-data.frame(species=character(0), iucn.area=numeric(0))
 sp3746<-readOGR(dsn="IUCN/species_3746/", layer="species_3746")
 proj4string(sp3746)<-CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
@@ -747,5 +751,4 @@ sp41775<-readOGR(dsn="IUCN/species_41775/", layer="species_41775")
 proj4string(sp41775)<-CRS("+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 iucn.area<-rbind(iucn.area, data.frame(species="sscr", iucn.area=gArea(spTransform(sp41775, CRS("+proj=cea +lon_0=0")))/1e6))
 
-#write final range data
-write.table(file="range.final", range, sep="\t", col.names=T, row.names=F, quote=F)
+
