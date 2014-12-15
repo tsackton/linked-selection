@@ -64,7 +64,7 @@ avg.pi$spec[avg.pi$spec=="cret"] = "ccle"
 avg.pi$spec[avg.pi$spec=="mmca"] = "mmus"
 avg.pi$spec[avg.pi$spec=="ocan"] = "oari"
 avg.pi$spec[avg.pi$spec=="oruf"] = "osat"
-avg.pi$spec[avg.pi$spec=="pdav"] = "pper"
+avg.pi$spec[avg.pi$spec=="pdav"] = "pper" 
 avg.pi=avg.pi[,c("spec", "filt", "pi.avg")]
 
 ne<-merge(ne, avg.pi)
