@@ -110,3 +110,17 @@ Data files:
 1. ne_cors.txt: body size, mass, trophic level, kingdom, generation time, and density. Sources are described in spcor_ne.xls and the manuscript.
 2. qc_params.txt: total assembly size, size of assembly placed on chromosomes, ungapped placed assembly size, total genome size from C-value estimates, and whether our polymorphism data comes from domesticated populations. Sources described in spcor_assembly.xls and the manuscript.
 
+Final analysis
+---------------
+
+This section describes the scripts in the "final_analysis" folder used to produce the final figures and statistics for the manuscript.
+
++ linear_models.R: this R script contains the source code to replicate the linear modeling of the relationship between the impact of selection on neutral diversity and proxies for Nc, as described in the manuscript. It also contains the source code to generate Figure 3.
++ correlation_analysis.R: this R script contains the source code to replicate the analysis of partial correlations between neutral diversity and recombination rate, as described in the manuscript. It also contains the source code to generate Figure 2.
++ best_model_analysis.R: this R script contains the source code to replicate the analysis of the relative likelihoods of different population genetic models, as described in the manuscript. It also contains the source code to generate Figure 4.
++ figure1.R: this R script contains the source code to generate Figure 1.
+
+Misc scripts
+------------
+
+The "misc_scripts" folder contains a few filtering and data parsing scripts used for our analysis.
