@@ -1,6 +1,5 @@
 #packages
 require(plyr)
-require(glmulti)
 
 #load final table for analysis
 ne<-read.table("../pogen_models/ne_final_table.out", header=T, stringsAsFactors=F)
@@ -60,27 +59,30 @@ ne.main$plotcol[ne.main$kingdom=="animal"] = "blue1"
 ne.main$plotcol[ne.main$kingdom=="plant"] = "green4"
 #ne.main$plotcol[ne.main$spec == "ccle" | ne.main$spec=="grai" | ne.main$spec=="pper" | ne.main$spec == "ptri"] = "green4"
 
+#set up layout
+fig3.out<-rbind(c(1,2),c(3,3))
+pdf(file="Figure3.pdf")
+layout(fig3.out)
+
 #part A
-pdf(file="Figure3A.pdf")
-par(mar=c(5,5,3,1))
+par(mar=c(4,5,2,1))
+par(xpd=F)
 plot(ne.main$selstr.best ~ ne.main$logrange, col=ne.main$plotcol, pch=16, xlab=expression('Log'[10]*' Range (sq km)'), ylab="Impact of Selection", las=1, ylim=c(0,0.8), bty="l")
 abline(lm(selstr.best ~ logrange, data=ne.main[ne.main$kingdom=="plant",]), col="green4")
 abline(lm(selstr.best ~ logrange, data=ne.main[ne.main$kingdom=="animal",]), col="blue1")
-mtext("A", 3, at=c(2.7), cex=1.5, line=0.5)
-dev.off()
+mtext("A", 3, at=c(2.7), line=0.5)
+legend("topleft", legend=c("Animals", "Plants"), pch=16, col=c("blue1", "green4"), bty="n")
 
 #part B
-pdf(file="Figure3B.pdf")
-par(mar=c(5,5,3,1))
+par(mar=c(4,5,2,1))
 plot(ne.main$selstr.best ~ ne.main$logsize, col=ne.main$plotcol, pch=16, xlab=expression('Log'[10]*' Size (meters)'), ylab="Impact of Selection", las=1, ylim=c(0,0.8), bty='l')
 abline(lm(selstr.best ~ logsize, data=ne.main[ne.main$kingdom=="plant",]), col="darkgreen")
 abline(lm(selstr.best ~ logsize, data=ne.main[ne.main$kingdom=="animal",]), col="blue")
-mtext("B", 3, at=c(-3.5), cex=1.5, line=0.5)
-dev.off()
+mtext("B", 3, at=c(-3.5), line=0.5)
 
 #part C
-pdf(file="Figure3C.pdf")
 par(mar=c(8,5,3,1))
+par(xpd=NA)
 robustness.test.main$U=factor(robustness.test.main$U, levels=c("min", "const", "max"))
 robustness.test.main$plotcol=NA
 robustness.test.main$plotcol[robustness.test.main$pvalue<0.001 & is.na(robustness.test.main$plotcol)]="orangered3"
@@ -92,7 +94,9 @@ robustness.test.main$label=with(robustness.test.main, paste(U,filt,mod.set,wind,
 plot(robustness.test.main$adjr2, xaxt="n", ylab=expression("Adjusted R"^2), col="gray20", type="h", las=2, ylim=c(0,0.8), bty="l", xlab="")
 points(robustness.test.main$adjr2, pch=16, type="p", col=robustness.test.main$plotcol)
 axis(1, labels=c(as.character(robustness.test.main$label)), at=c(1:length(robustness.test.main$label)), las=2, cex.axis=0.65)
-legend("topright", col=c("orangered3", "darkorange", "goldenrod1", "gray50"), legend=c(expression("P "<=" 0.001"), expression("0.001 < P "<=" 0.01"), expression("0.01 < P "<=" 0.05"), "P > 0.05"), pch=16, bty="n")
-mtext("Model Parameters (U, Filtering, Model Set, Window Size)", side=1, line=6)
+legend(x=29, y=0.95, col=c("orangered3", "darkorange", "goldenrod1", "gray50"), legend=c(expression("P "<=" 0.001"), expression("0.001 < P "<=" 0.01"), expression("0.01 < P "<=" 0.05"), "P > 0.05"), pch=16, bty="n")
+mtext("Model Parameters (U, Filtering, Model Set, Window Size)", side=1, line=6, cex=0.8)
 mtext("C", side=3, line=0.5, at=-2)
-dev.off()
+
+dev.off() #close PDF
+

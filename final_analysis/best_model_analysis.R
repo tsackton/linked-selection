@@ -11,7 +11,6 @@ ne=ne[,-c(26,27,28,29,30)]
 ne<-merge(ne, qc.params, by.x="spec", by.y="sp")
 rm(qc.params)
 
-
 #define some additional variables
 ne$placed.frac = ne$placed.bp / ne$assembly.bp
 ne$ungapped.frac = ne$placed.ungapped.bp / ne$placed.bp
@@ -22,7 +21,10 @@ ne$logrange = log10(ne$area)
 #500kb windows, standard filtering, U estimated as mutation rate * exonic bases, and variable hitchhiking model (accounting for differences in gene density across windows)
 
 ne.main<-subset(ne, wind==500 & filt=="std" & mod.set=="set1" & U=="min")
-
+####
+##REQUIRES THE RAW MODEL FITS FROM THE SELECTION MODEL
+##TO REPLICATE OUR ANALYSIS WITHOUT RERUNNING THE GK AND POPGEN MODEL CODE SKIP TO LINE 70 AND UNCOMMENT THE READ TABLE STATEMENT
+####
 select.results<-ddply(ne.main[,c("spec", "wind", "U", "rec", "selfing")], .(spec, wind, U, rec, selfing), splat(get_mod_results))
 select.results=subset(select.results, filt=="std")
 
@@ -64,6 +66,8 @@ ne.best$best.model.plot=factor(ne.best$best.model.plot, levels=c("neutral", "bgs
 ne.best$hh.conf=cut(ne.best$rel.lik.hh, breaks=c(0,0.05,0.9,1), include.lowest=T, right=T, labels=c("low", "med", "high"))
 ne.best$neut.conf=cut(ne.best$rel.lik.neut, breaks=c(0,0.05,0.9,1), include.lowest=T, right=T, labels=c("low", "med", "high"))
 ne.best$bgs.conf=cut(ne.best$rel.lik.bgs, breaks=c(0,0.05,0.9,1), include.lowest=T, right=T, labels=c("low", "med", "high"))
+##UNCOMMENT LINE BELOW TO LOAD NE.BEST DATA FRAME
+#ne.best<-read.table("ne_best_table.out", header=T, sep="\t")
 
 #significance tests, categorical
 require(coin)
@@ -97,8 +101,13 @@ wilcox_test(ne.best$logsize ~ as.factor(ne.best$hh.conf != "low"))
 
 wilcox_test(ne.best$rel.lik.hh[ne.best$nc.class!="med"] ~ droplevels(ne.best$nc.class[ne.best$nc.class!="med"]))
 
+##FIGURE 4##
+
+#setup layout
+pdf(file="Figure4.pdf", width=8, height=6)
+par(mfrow=c(1,2))
+
 #Figure 4A
-pdf(file="Figure4A.pdf")
 par(mar=c(5,5,3,1), xpd=NA)
 stripchart(ne.best$logrange ~ ne.best$neut.conf, vert=T, pch=16, at=c(0.2,0.7,1.2), xlim=c(0,1.4), ylim=c(3,8), las=1, ylab=expression('Log'[10]*' Range (sq km)'), xlab="Support for Neutral Model", group.names=c("Low", "Medium", "High"), frame.plot=F)
 points(x=c(0.2, 0.7, 1.2), y=c(median(ne.best$logrange[ne.best$neut.conf=="low"]), median(ne.best$logrange[ne.best$neut.conf=="med"]), median(ne.best$logrange[ne.best$neut.conf=="high"])), pch=18, col="red", cex=2)
@@ -108,10 +117,8 @@ lines(x=c(0.2,1.2), y=c(8.4,8.4), col="black", lwd=1)
 text(x=0.45, y=8.15, label="*", cex=1.5)
 text(x=0.575, y=8.3, label="**", cex=1.5)
 text(x=0.7, y=8.45, label="*", cex=1.5)
-dev.off()
 
 #Figure 4B
-pdf(file="Figure4B.pdf")
 par(mar=c(5,5,3,1), xpd=NA)
 stripchart(ne.best$logsize ~ ne.best$neut.conf, vert=T, pch=16, at=c(0.2,0.7,1.2), xlim=c(0,1.4), ylim=c(-3.5,2), las=1, ylab=expression('Log'[10]*' Size (m)'), xlab="Support for Neutral Model", group.names=c("Low", "Medium", "High"), frame.plot=F)
 points(x=c(0.2, 0.7, 1.2), y=c(median(ne.best$logsize[ne.best$neut.conf=="low"]), median(ne.best$logsize[ne.best$neut.conf=="med"]), median(ne.best$logsize[ne.best$neut.conf=="high"])), pch=18, col="red", cex=2)
@@ -121,4 +128,9 @@ lines(x=c(0.2,1.2), y=c(2.2,2.2), col="black", lwd=1)
 text(x=0.45, y=1.95, label="***", cex=1.5)
 text(x=0.575, y=2.10, label="***", cex=1.5)
 text(x=0.7, y=2.25, label="*", cex=1.5)
+
+#labels
+mtext("A", side=3, line=0.5, at=-2.5)
+mtext("B", side=3, line=0.5, at=-.3)
+
 dev.off()

@@ -409,14 +409,14 @@ windows.for.theta=rbind(windows.piece, windows.poly)
 #windows for gk <- one file each per window size and rec estimator
 #mutation rates <- mutation rate options to use for each species
 
-write.table(windows.for.theta, file="windows_for_theta.out", row.names=F, quote=F, sep="\t")
+write.table(format(windows.for.theta, scientific=F), file="windows_for_theta.out", row.names=F, quote=F, sep="\t")
 
-write.table(wind100.poly.for.gk, file="wind100_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind500.poly.for.gk, file="wind500_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind1000.poly.for.gk, file="wind1000_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind100.piece.for.gk, file="wind100_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind500.piece.for.gk, file="wind500_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
-write.table(wind1000.piece.for.gk, file="wind1000_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind100.poly.for.gk, scientific=F), file="wind100_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind500.poly.for.gk, scientific=F), file="wind500_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind1000.poly.for.gk, scientific=F), file="wind1000_poly_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind100.piece.for.gk, scientific=F), file="wind100_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind500.piece.for.gk, scientific=F), file="wind500_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
+write.table(format(wind1000.piece.for.gk, scientific=F), file="wind1000_piece_forgk.out", row.names=F, quote=F, sep="\t", col.names=F)
 
 write.table(u.df, file="mut_ests.txt", row.names=F, quote=F, sep="\t")
 write.table(merged.r2, file="rec_fits.txt", row.names=F, col.names=T, quote=F, sep="\t")
